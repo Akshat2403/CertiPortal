@@ -1,0 +1,25 @@
+Hi, {{candid.name}} ,
+Hope you are fine and doing well. The whole world is suffering from the impact of the COVID-19. Our nation is also fighting hard to make situations better. We too need to make sure to keep ourselves safe from the virus by taking all measures.
+Due to the above issue, we were unable to reach out to you regarding the certification for the Campus Ambassador(CA) of Acheringa'2020. We owe you sincere apologies for our delay. Now we come up with the certificates of the CA's of Alcheringa'2020. 
+We thank you for being a part of the 24th Edition of the Northeast’s largest Cultural fest, Alcheringa'2020,Gala de Janeiro. We are expecting the same enthusiastic participation and contribution from you every year.
+
+Link for the certificate: http://localhost:8000/certificate/{{candid.certificate_url}}
+
+For any further queries or feedback, please feel free to mail us at: publicrelations20@alcheringa.in .
+
+Facebook Page: https://www.facebook.com/alcheringaiitg
+
+Instagram page: https://www.instagram.com/alcheringaiitg/
+
+Twitter page: https://twitter.com/alcheringaiitg
+
+--
+Have a good day!
+
+Thanks and Regards,
+
+  
+Nivedit ukey
+Public Relations Head
+Alcheringa'21
++91 9370432794

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}Certificate Portal{% endblock %}
+
+{% block content %}
+  <p>
+    Welcome to Certificate portal Alcheringa
+  </p>
+  {% if user.is_authenticated %}
+  
+   Hi {{ user.username }}!
+  <br>
+  Choose your option:
+  <br>
+  <a href="{% url 'candidForm' %}">Enter Candidate data</a>
+  <br>
+  <a href="{% url 'candidList' %}">View Candidate data</a>
+  <br>
+  <a href="{% url 'candidBulk' %}">Add Candidates through CSV</a>
+  <br>
+  <a href="{% url 'logout' %}">Logout</a>
+  {% else %}
+  <p>
+    You are not logged in!!
+  </p>
+  <a href="{% url 'login' %}">Login</a>
+  {% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Special Achievers List{% endblock %}
+
+{% block content %}
+<br>
+<a href = "{% url 'candidList' %}"><button>View all candidates</button></a>
+<a href = "{% url 'index' %}"><button> Home </button> </a>
+<br><br>
+
+<br>
+<a href= "{% url 'massmailsa' %}"><button>SEND MAIL TO ALL Special Achievers</button></a>
+<br>
+<br>
+
+<table rules="all">
+	<thead>
+		<th>ALCHER_ID</th>
+		<th>NAME</th>
+		<th>CERTIFICATE_TYPE</th>
+		<th>Event</th>
+		<th>Achievement</th>
+		<th>College</th>
+		<th>IS_VALID</th>
+		<th>EMAIL</th>
+	</thead>
+	<tbody>
+		{% for candid in candids %}
+		<tr>
+			<td><a href="{% url 'candidUpdateForm' candid.pk %}" title="Edit">{{candid.alcher_id}}</a></td>
+			<td>{{candid.name}}</td>
+			<td>{{candid.get_certificate_type_display}}</td>
+			<td>{{ candid.event }} </td>
+			<td> {{ candid.special_achievement }} </td>
+			<td>{{candid.college}}</td>
+			<td>{{candid.is_valid}}</td>
+			<td>{{candid.email}}</td>
+			{% if candid.is_valid and candid.is_generated %}
+			<td><a href="{% url 'send_email' candid.alcher_id candid.certificate_url %}"><button>Send Email</button></a></td>
+			<td><a href="{% url 'certificate' candid.certificate_url %}" target="_blank"><button>View Certificate</button></a></td>
+			{% endif %}
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+	
+	<a href="{% url 'candidForm' %}"><button>
+		Add Candidates
+	</button></a>
+
+	<a href="{% url 'candidBulk' %}"><button>
+		Add Candidates through CSV
+	</button></a>
+	<a href = "{% url 'candidList' %}"><button>View all candidates</button></a>
+	<a href = "{% url 'index' %}"><button> Home </button></a>
+
+
+{% endblock %}

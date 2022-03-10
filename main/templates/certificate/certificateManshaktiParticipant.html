@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Certificate</title>
+	<style>
+		@page {
+    size: letter landscape;
+    margin: 2cm;
+    background: url("https://i.ibb.co/3f2kJsK/Manshakti-participation.png");
+
+
+
+     @frame name_frame {          /* Content Frame */
+        left: 230pt; width: 490pt; top: 290pt; height: 30pt;
+            -pdf-frame-content: name_content;
+            /* -pdf-frame-border: 1; */
+          
+            
+        }
+
+
+     @frame event_frame {          /* Content Frame */
+        left: 300pt; width: 155pt; top: 380pt; height: 25pt;
+            -pdf-frame-content: event_content;
+            /* -pdf-frame-border: 1;
+             */
+            
+        }
+
+        @frame college_frame {          /* Content Frame */
+        left: 265pt; width: 225pt; top: 353pt; height: 25pt;
+            -pdf-frame-content: college_content;
+            /* -pdf-frame-border: 1; */
+            
+            
+        }
+       
+
+
+}
+
+#name_content{
+	font-size: 15px;
+	text-align: center;
+}
+
+#event_content{
+	font-size: 15px;
+	text-align: center;
+}
+
+.college_content{
+    font-size: 11px;
+    text-align: center;
+}
+
+body{
+
+	font-size: 14px;
+	text-align: center;
+}
+
+
+
+	</style>
+</head>
+<body>
+	<div id="name_content"><h2>{{ candid_name }}</h2></div>
+    <div class = "college_content" id="college_content"><h2>{{ candid_college }}</h2></div>
+	<div id="event_content"><h2>{{candid_event}}</h2></div>
+</body>
+</html>

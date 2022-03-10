@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Candidate Bulk{% endblock %}
+
+{% block content %}
+<!-- {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+    {% endfor %}
+</ul>
+{% endif %} -->
+
+<br>
+<a href = "{% url 'candidList' %}"><button>View all candidates</button></a>
+<a href = "{% url 'index' %}"><button> Home </button></a>
+<br><br>
+
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}  
+    {{ form.as_p }}
+    <button>Submit</button>
+</form>
+
+<p>The .csv file uploaded should be in this <a href="{% static 'main/sample_upload.csv' %}">format</a>. </p>
+
+{% if skipped_candids %}
+<strong>ALERT!!</strong>
+<p>These rows were not added, it may be because the data is not in the expected format or the data is duplicate</p>
+<ul>
+{% for candids in skipped_candids %}
+{% for candid in candids %}
+
+<li>{{candid}}</li>
+{% endfor %}
+{% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
