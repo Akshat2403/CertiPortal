@@ -151,7 +151,7 @@ def send_email(request , alcher_id, certificate_url):
     send_mail(
         'Certificate Alcheringa: ' + str(current_year()),
         content,
-        'publicrelations@alcheringa.in',
+        'publicrelations23@alcheringa.in',
         [candid.email],
         fail_silently = False,
         )
@@ -325,7 +325,7 @@ def massmail(request,event_name):
         elif candid.certificate_type == 'MP':
             content = render_to_string('main/emails/mailmsparticipant.txt', context)
 
-        sender = 'publicrelations@alcheringa.in'
+        sender = 'publicrelations23@alcheringa.in'
         recipient = [candid.email]
         message  = (subject, content , sender , recipient)
         message_list.append(message)
@@ -360,7 +360,7 @@ def massmailca(request):
         context = {'candid' : candid, }
         subject = 'Certificate Alcheringa: ' + str(current_year())
         content = render_to_string('main/emails/mailca.txt', context)
-        sender = 'publicrelations@alcheringa.in'
+        sender = 'publicrelations23@alcheringa.in'
         recipient = [candid.email]
         message  = (subject, content , sender , recipient)
         message_list.append(message)
@@ -393,7 +393,7 @@ def massmailsa(request):
         context = {'candid' : candid, }
         subject = 'Certificate Alcheringa: ' + str(current_year())
         content = render_to_string('main/emails/mailsa.txt', context)
-        sender = 'publicrelations@alcheringa.in'
+        sender = 'publicrelations23@alcheringa.in'
         recipient = [candid.email]
         message  = (subject, content , sender , recipient)
         message_list.append(message)

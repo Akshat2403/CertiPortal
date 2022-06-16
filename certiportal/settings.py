@@ -24,7 +24,7 @@ MEDIA_URL = '/media/'
 SECRET_KEY = 'h91!s0hm1!xw*)&gt8=bhafxgmzbysl%p84&6c#c014jw7@$k2'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://certificate.alcheringa.in']
@@ -129,14 +129,19 @@ LOGOUT_REDIRECT_URL = '/accounts/logout/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Email host settings
-'''
-EMAIL_HOST = 'smtp.sendgrid.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER  = "apikey" #### Enter your host username here
-EMAIL_HOST_PASSWORD = ""
+
+# EMAIL_HOST = 'smtp.sendgrid.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER  = "apikey" #### Enter your host username here
+# EMAIL_HOST_PASSWORD = ""
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+
+# DEFAULT_FROM_EMAIL = "publicrelations@alcheringa.in"
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
-
-DEFAULT_FROM_EMAIL = "publicrelations@alcheringa.in"
-
-'''
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD')
