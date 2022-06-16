@@ -27,7 +27,7 @@ SECRET_KEY = 'h91!s0hm1!xw*)&gt8=bhafxgmzbysl%p84&6c#c014jw7@$k2'
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://certificate.alcheringa.in']
 
 # Application definition
 
