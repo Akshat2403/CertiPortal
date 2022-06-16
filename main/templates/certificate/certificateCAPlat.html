@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Certificate</title>
+  <style>
+    @page {
+      size: letter landscape;
+      margin: 2cm;
+      background: url("https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/achievement%20platinum%20template.png");
+
+
+
+
+
+      @frame name_frame {
+        /* Content Frame */
+        left: 400pt;
+        width: 210pt;
+        top: 218pt;
+        height: 25pt;
+        -pdf-frame-content: name_content;
+        -pdf-frame-border: 1;
+
+
+      }
+
+
+
+      @frame event_frame {
+        /* Content Frame */
+        left: 330pt;
+        width: 210pt;
+        top: 290pt;
+        height: 25pt;
+        -pdf-frame-content: event_content;
+        /* -pdf-frame-border: 1; */
+
+
+      }
+
+      @frame college_frame {
+        /* Content Frame */
+        left: 300pt;
+        width: 350pt;
+        top: 264pt;
+        height: 25pt;
+        -pdf-frame-content: college_content;
+        /* -pdf-frame-border: 1; */
+
+
+      }
+
+
+    }
+
+    #name_content {
+      font-size: 15px;
+      color: rgb(0, 0, 0);
+    }
+
+    #event_content {
+      font-size: 15px;
+      text-align: center;
+      color: rgb(0, 0, 0);
+    }
+
+    #college_content {
+      font-size: 15px;
+      text-align: left;
+      color: rgb(0, 0, 0);
+    }
+
+    body {
+
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="name_content">
+    <h2>"{{candid_name}}"</h2>
+  </div>
+  <div id="college_content">
+    <h2>{{candid_college}}</h2>
+  </div>
+</body>
+
+</html>
