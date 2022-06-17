@@ -8,18 +8,20 @@
     @page {
       size: letter landscape;
       margin: 2cm;
-      background: url("https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/participation%20template.png");
+      background: url("https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/achievement%20platinum%20template.png");
+
+
 
 
 
       @frame name_frame {
         /* Content Frame */
-        left: 420pt;
+        left: 400pt;
         width: 210pt;
-        top: 242pt;
+        top: 218pt;
         height: 25pt;
         -pdf-frame-content: name_content;
-        /* -pdf-frame-border: 1; */
+        -pdf-frame-border: 1;
 
 
       }
@@ -28,9 +30,9 @@
 
       @frame event_frame {
         /* Content Frame */
-        left: 320pt;
+        left: 330pt;
         width: 210pt;
-        top: 310pt;
+        top: 290pt;
         height: 25pt;
         -pdf-frame-content: event_content;
         /* -pdf-frame-border: 1; */
@@ -40,9 +42,9 @@
 
       @frame college_frame {
         /* Content Frame */
-        left: 285pt;
+        left: 280pt;
         width: 350pt;
-        top: 272pt;
+        top: 250pt;
         height: 25pt;
         -pdf-frame-content: college_content;
         /* -pdf-frame-border: 1; */
@@ -55,19 +57,19 @@
 
     #name_content {
       font-size: 15px;
-      color: rgb(255, 255, 255);
+      color: rgb(0, 0, 0);
     }
 
     #event_content {
       font-size: 15px;
       text-align: center;
-      color: rgb(255, 255, 255);
+      color: rgb(0, 0, 0);
     }
 
     #college_content {
       font-size: 15px;
       text-align: left;
-      color: rgb(255, 255, 255);
+      color: rgb(0, 0, 0);
     }
 
     body {
@@ -79,7 +81,7 @@
 
 <body>
   <div id="name_content">
-    <h2>{{candid_name}}</h2>
+    <h2>"{{candid_name}}"</h2>
   </div>
   <div id="college_content">
     <h2>{{candid_college}}</h2>

@@ -5,7 +5,7 @@ import sys
 import dotenv
 
 def main():
-    dotenv.load_dotenv()
+    dotenv.read_dotenv()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'certiportal.settings')
     try:
         from django.core.management import execute_from_command_line
