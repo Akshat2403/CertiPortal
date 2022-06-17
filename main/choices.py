@@ -1,5 +1,8 @@
 CERTIFICATE_OPTIONS = [
-        ('CA', 'Campus Ambassador'),
+        ('CA_G', 'Campus Ambassador Gold'),
+        ('CA_P', 'Campus Ambassador Platinum'),
+        ('CA_S', 'Campus Ambassador Silver'),
+        ('CA_Part', 'Campus Ambassador Participation'),
         ('P' , 'Participant' ),
         ('W' , 'Winner'),
         ('SA' , 'Special Achievement'),
