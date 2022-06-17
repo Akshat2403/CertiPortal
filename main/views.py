@@ -48,14 +48,22 @@ def certificate(request, cert_id):
         return Render.render('certificate/certificateSA.html',context)
     elif candid.certificate_type == 'P': 
         return Render.render('certificate/certificateParticipation.html', context)
-    elif candid.certificate_type == 'CA': 
-        return Render.render('certificate/certificateCA.html', context)
+
+    elif candid.certificate_type == 'CA_P': 
+        return Render.render('certificate/certificateCAPlat.html', context)
+    elif candid.certificate_type == 'CA_G': 
+        return Render.render('certificate/certificateCAGold.html', context)
+    elif candid.certificate_type == 'CA_S': 
+        return Render.render('certificate/certificateCASilver.html', context)
+    elif candid.certificate_type == 'CA_Part': 
+        return Render.render('certificate/certificateCAPart.html', context)
+
     elif candid.certificate_type == 'W': 
         return Render.render('certificate/certificateWinner.html', context)
     elif candid.certificate_type == 'MP':
         return Render.render('certificate/certificateManshaktiParticipant.html',context)
     elif candid.certificate_type == 'MW':
-        return Render.render('certificate/certificaterunner.html',context)
+        return Render.render('certificate/certificateManshaktiWinner.html',context)
    
 
 
@@ -135,7 +143,7 @@ def send_email(request , alcher_id, certificate_url):
 
     if candid.event == 'Parliamentry Debate':
         content = render_to_string('main/emails/mailPD.txt', context)
-    elif candid.certificate_type == 'CA':
+    elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
         content = render_to_string('main/emails/mailca.txt', context)
     elif candid.certificate_type == 'P':
         content = render_to_string('main/emails/mailparticipant.txt', context)
@@ -345,7 +353,7 @@ def massmail(request,event_name):
 
 @login_required
 def calist(request):
-    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA' )
+    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA_G' ) | candidate.objects.filter(year=current_year(), certificate_type = 'CA_S' ) | candidate.objects.filter(year=current_year(), certificate_type = 'CA_P' ) | candidate.objects.filter(year=current_year(), certificate_type = 'CA_Part' ) 
     context = {
         'candids': candids,
         }

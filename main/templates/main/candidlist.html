@@ -1,3 +1,6 @@
+
+
+
 {% extends 'base.html' %}
 
 {% block title %}Candidate List{% endblock %}
@@ -18,7 +21,9 @@
 <a href= "{% url 'salist' %}"><button>Special Achievers list</button></a>
 <br><br>
 
+
 <a href= "{% url 'massmail' event_name %}"><button>SEND MAIL TO ALL PARTICIPANTS IN {{ event_name }}</button></a>
+
 <br>
 <br>
 <table rules="all">
