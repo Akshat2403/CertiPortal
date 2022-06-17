@@ -26,7 +26,7 @@ class CandidForm(forms.Form):
     alcher_id = forms.CharField(max_length=20, validators = [alcher_id_validator])
     name = forms.CharField(max_length=100)
     certificate_type = forms.CharField(
-        max_length=2,
+        max_length=7,
         widget=forms.Select(choices=CERTIFICATE_OPTIONS),
     )
     position = forms.IntegerField(
