@@ -52,7 +52,7 @@ def certificate(request, cert_id):
     elif candid.certificate_type == 'CA_P': 
         return Render.render('certificate/certificateCAPlat.html', context)
     elif candid.certificate_type == 'CA_G': 
-        return Render.render('certificate/certificateCAGold.html', context)
+        return render(request, 'certificate/certificateCAGold.html', context)
     elif candid.certificate_type == 'CA_S': 
         return Render.render('certificate/certificateCASilver.html', context)
     elif candid.certificate_type == 'CA_Part': 
