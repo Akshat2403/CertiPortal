@@ -196,7 +196,7 @@ def readDataFromCSV(csv_file):
             else:
                 position = 1
             email_validator = EmailValidator()
-            alcher_id_validator = RegexValidator(r"ALC-[A-Z]{3}-[0-9]+")
+            alcher_id_validator = RegexValidator(r"ALC-[0-9]{4}-[0-9A-Za-z]+")
             alcher_id_validator(alcher_id)
             email_validator(email)
         except (ValidationError, ValueError) as e :
