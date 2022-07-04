@@ -43,6 +43,7 @@ def certificate(request, cert_id):
         'candid_college' : candid.college,
         'candid_achievement' : candid.special_achievement,
     }
+    print(candid.certificate_type)
     if candid.event == 'Parliamentry Debate':
         return Render.render('certificate/certificatePD.html',context)
     elif candid.certificate_type == 'SA':
@@ -51,13 +52,13 @@ def certificate(request, cert_id):
         return Render.render('certificate/certificateParticipation.html', context)
 
     elif candid.certificate_type == 'CA_P': 
-        return Render.render('certificate/certificateCAPlat.html', context)
+        return render(request, 'certificate/certificateCAPlat.html', context)
     elif candid.certificate_type == 'CA_G': 
         return render(request, 'certificate/certificateCAGold.html', context)
     elif candid.certificate_type == 'CA_S': 
-        return Render.render('certificate/certificateCASilver.html', context)
+        return render(request, 'certificate/certificateCASilver.html', context)
     elif candid.certificate_type == 'CA_Part': 
-        return Render.render('certificate/certificateCAPart.html', context)
+        return render(request, 'certificate/certificateCAPart.html', context)
 
     elif candid.certificate_type == 'W': 
         return Render.render('certificate/certificateWinner.html', context)
