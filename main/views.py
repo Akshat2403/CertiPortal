@@ -1,3 +1,4 @@
+from turtle import pos
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -190,13 +191,15 @@ def readDataFromCSV(csv_file):
         year = fields[6].strip()
         email = fields[7].strip()
 
+        # print(alcher_id, name, certificate_type, position, college, event, year, email)
+
         try:
             if position:
                 position = int(position)
             else:
                 position = 1
             email_validator = EmailValidator()
-            alcher_id_validator = RegexValidator(r"ALC-[A-Z]{3}-[0-9]+")
+            alcher_id_validator = RegexValidator(r"ALC-[0-9]{4}-[0-9A-Za-z]+")
             alcher_id_validator(alcher_id)
             email_validator(email)
         except (ValidationError, ValueError) as e :
@@ -209,9 +212,10 @@ def readDataFromCSV(csv_file):
 
         if not isDuplicate(alcher_id, event, certificate_type, year):
             new_url = generateUrl(alcher_id, year)
-            candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
+            print(alcher_id, event, certificate_type, year)
+            candidate(alcher_id=alcher_id, name=name, event=event, 
                     certificate_type=certificate_type, position=position, college=college, is_valid=True, is_generated=True, 
-                    certificate_url=new_url, email=email, year=year) 
+                    certificate_url=new_url, email=email, year=year).save()
     return skipped_candids
 
 
