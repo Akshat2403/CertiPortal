@@ -58,6 +58,7 @@
 			<td><a href="{% url 'send_email' candid.alcher_id candid.certificate_url %}"><button>Send Email</button></a></td>
 			<td><a href="{% url 'certificate' candid.certificate_url %}" target="_blank"><button>View Certificate</button></a></td>
 			<td><a href="{% url 'certificate' candid.certificate_url %}" download="{{ candid.name }}_{{ candid.event }}.pdf"><button>Save Certificate</button></a></td>
+			<td><a href="{% url 'delete_candidate' candid.certificate_url %}"><button>Delete</button></a></td>
 			{% endif %}
 		</tr>
 	{% endfor %}

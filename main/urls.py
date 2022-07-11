@@ -10,6 +10,7 @@ urlpatterns = [
     path('accounts/logout/', views.logoutView , name="logoutView"),
     path('cnotfound', views.certificateNotFound , name="certificateNotFound"),
     path('mail_sent/<slug:alcher_id>/<str:certificate_url>', views.send_email , name="send_email"),
+    path('delete_candidate/<str:certificate_url>', views.delete_candidate , name="delete_candidate"),
     path('candidupdate/<int:tpk>', views.candidUpdateForm , name="candidUpdateForm"),
     re_path(r'^certificate/(?P<cert_id>[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+-20[0-9]{2}-[0-9]+-[0-9A-Za-z]{16})/$', views.certificate , name="certificate"),
     path('massmail/<str:event_name>', views.massmail, name="massmail"),

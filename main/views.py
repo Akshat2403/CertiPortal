@@ -29,6 +29,7 @@ def certificateNotFound(request):
 def certificate(request, cert_id):
     try:
         candid = candidate.objects.get(certificate_url=cert_id)
+        print(candid)
     except candidate.DoesNotExist:
         candid = None
 
@@ -128,6 +129,13 @@ def candidList(request):
     print(candids)
     return render(request, 'main/candidlist.html', context)
 
+
+@login_required
+def delete_candidate(request, certificate_url):
+    candid = candidate.objects.filter(certificate_url=certificate_url).first()
+    candid.delete()
+    return redirect('candidList')
+
 @login_required
 def send_email(request , alcher_id, certificate_url):
     try:
@@ -211,7 +219,7 @@ def readDataFromCSV(csv_file):
         #     skipped_candids.append((alcher_id,event))
         #     continue
 
-        if not isDuplicate(alcher_id, event, certificate_type, year):
+        if not isDuplicate(email, event, certificate_type, year):
             new_url = generateUrl(email, year)
             print(alcher_id, event, certificate_type, year)
             candidate(alcher_id=alcher_id, name=name, event=event, 
