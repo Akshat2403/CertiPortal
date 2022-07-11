@@ -79,14 +79,14 @@ def isDuplicate(alcher_id, event, certificate_type, year):
         return True
     
 
-def generateUrl(alcher_id , year):
+def generateUrl(email , year):
     last_num = 0
-    candid_certificates = candidate.objects.filter(alcher_id=alcher_id).order_by('-pk')
+    candid_certificates = candidate.objects.filter(email=email).order_by('-pk')
     if len(candid_certificates) > 0:  
         latest_cert = candid_certificates.first()
         arr = latest_cert.certificate_url.split('-')
         last_num = int(arr[4])
-    new_url = alcher_id + '-' + str(year) + '-' + str(last_num+1) + '-' + os.urandom(8).hex()
+    new_url = email + '-' + str(year) + '-' + str(last_num+1) + '-' + os.urandom(8).hex()
     return new_url
 
 
@@ -105,7 +105,7 @@ def candidForm(request):
             email = form.cleaned_data['email']
             special_achievement = form.cleaned_data['special_achievement']
             if not isDuplicate(alcher_id, event, certificate_type, year):
-                new_url = generateUrl(alcher_id , year)
+                new_url = generateUrl(email , year)
                 candidate.objects.create(alcher_id=alcher_id, name=name, event=event, 
                     certificate_type=certificate_type, position=position, college=college, is_valid=True, is_generated=True, 
                     certificate_url=new_url, email=email, year=year, special_achievement = special_achievement, )
@@ -212,7 +212,7 @@ def readDataFromCSV(csv_file):
         #     continue
 
         if not isDuplicate(alcher_id, event, certificate_type, year):
-            new_url = generateUrl(alcher_id, year)
+            new_url = generateUrl(email, year)
             print(alcher_id, event, certificate_type, year)
             candidate(alcher_id=alcher_id, name=name, event=event, 
                     certificate_type=certificate_type, position=position, college=college, is_valid=True, is_generated=True, 
@@ -275,7 +275,7 @@ def candidUpdateForm(request, tpk):
             obj.certificate_type = certificate_type
             obj.year = year
             obj.email = email
-            new_url = generateUrl(alcher_id ,year)
+            new_url = generateUrl(email ,year)
             obj.certificate_url = new_url
             obj.is_valid = is_valid
             obj.position = position
