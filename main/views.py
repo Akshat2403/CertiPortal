@@ -379,7 +379,7 @@ def massmailca(request):
     
     for candid in candids:
         context = {'candid' : candid, }
-        subject = 'Certificate Alcheringa: ' + str(current_year())
+        subject = "'Certification for Campus Ambassador Program , Alcheringa'22'"
         content = render_to_string('main/emails/mailca.txt', context)
         sender = 'publicrelations23@alcheringa.in'
         recipient = [candid.email]
