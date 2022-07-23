@@ -14,6 +14,8 @@ from django.core.validators import RegexValidator, EmailValidator
 from post_office import mail
 import os
 from django.http import HttpResponse
+from django.utils.html import strip_tags
+from django.core.mail import EmailMultiAlternatives
 
 # Create your views here.
 def index(request):
@@ -154,7 +156,9 @@ def send_email(request , alcher_id, certificate_url):
     if candid.event == 'Parliamentry Debate':
         content = render_to_string('main/emails/mailPD.txt', context)
     elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
-        content = render_to_string('main/emails/mailca.txt', context)
+        # html_message = render_to_string('main/emails/mailca.html', context)
+        # content = strip_tags(html_message)
+        content = render_to_string('main/emails/mailca.html', context)
     elif candid.certificate_type == 'P':
         content = render_to_string('main/emails/mailparticipant.txt', context)
     elif candid.certificate_type == 'W':
@@ -166,13 +170,12 @@ def send_email(request , alcher_id, certificate_url):
     elif candid.certificate_type == 'MP':
         content = render_to_string('main/emails/mailmsparticipant.txt', context)
 
-    send_mail(
-        'Certificate Alcheringa: ' + str(current_year()),
-        content,
-        'publicrelations23@alcheringa.in',
-        [candid.email],
-        fail_silently = False,
-        )
+    message = EmailMultiAlternatives(
+        subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
+        to = [candid.email],
+    )
+    message.attach_alternative(content, "text/html")
+    message.send(fail_silently=False)
     return render(request, 'main/mail_sent.html' , context)
     
 
@@ -380,7 +383,8 @@ def massmailca(request):
     for candid in candids:
         context = {'candid' : candid, }
         subject = "'Certification for Campus Ambassador Program , Alcheringa'22'"
-        content = render_to_string('main/emails/mailca.txt', context)
+        html_message = render_to_string('main/emails/mailca.html', context)
+        content = strip_tags(html_message)
         sender = 'publicrelations23@alcheringa.in'
         recipient = [candid.email]
         message  = (subject, content , sender , recipient)
