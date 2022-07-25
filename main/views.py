@@ -16,6 +16,7 @@ import os
 from django.http import HttpResponse
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -140,6 +141,7 @@ def delete_candidate(request, certificate_url):
 
 @login_required
 def send_email(request , alcher_id, certificate_url):
+    print("here")
     try:
         candid = candidate.objects.get(alcher_id = alcher_id, certificate_url = certificate_url)
     except candidate.DoesNotExist:
@@ -324,11 +326,12 @@ from django.core.mail import send_mass_mail
 
 @login_required
 def massmail(request,event_name):
-    if event_name == 'none':
-        candids = candidate.objects.filter(year=current_year())
-        context = {'candids': candids,
-        'event_name' : 'none',}
-        return render(request, 'main/candidlist.html', context)
+    # if event_name == 'none':
+    #     print("here")
+    #     candids = candidate.objects.filter(year=current_year())
+    #     context = {'candids': candids,
+    #     'event_name' : 'none',}
+    #     return render(request, 'main/candidlist.html', context)
 
     candids = candidate.objects.filter(year=current_year(), event=event_name)
     message_list = []
@@ -377,22 +380,19 @@ def calist(request):
 
 @login_required
 def massmailca(request):
-    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA')
-    message_list = []
+    print("here")
+    candids = candidate.objects.filter(Q(certificate_type = 'CA_G')|Q(certificate_type = 'CA_Part')|Q(certificate_type = 'CA_P')|Q(certificate_type = 'CA_S'))
     
     for candid in candids:
         context = {'candid' : candid, }
-        subject = "'Certification for Campus Ambassador Program , Alcheringa'22'"
-        html_message = render_to_string('main/emails/mailca.html', context)
-        content = strip_tags(html_message)
-        sender = 'publicrelations23@alcheringa.in'
-        recipient = [candid.email]
-        message  = (subject, content , sender , recipient)
-        message_list.append(message)
+        content = render_to_string('main/emails/mailca.html', context)
+        message = EmailMultiAlternatives(
+            subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
+            to = [candid.email],
+        )
+        message.attach_alternative(content, "text/html")
+        message.send(fail_silently=False)
     
-    message_tuple = tuple(message_list)
-    send_mass_mail(message_tuple, fail_silently=False)
-    candids = candidate.objects.filter(year=current_year(), certificate_type = 'CA')
     context = {
         'candids': candids,
     }
