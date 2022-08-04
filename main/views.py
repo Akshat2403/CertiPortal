@@ -32,7 +32,7 @@ def certificateNotFound(request):
 def certificate(request, cert_id):
     try:
         candid = candidate.objects.get(certificate_url=cert_id)
-        print(candid)
+        print(candid.certificate_type)
     except candidate.DoesNotExist:
         candid = None
 
@@ -53,7 +53,7 @@ def certificate(request, cert_id):
     elif candid.certificate_type == 'SA':
         return Render.render('certificate/certificateSA.html',context)
     elif candid.certificate_type == 'P': 
-        return Render.render('certificate/certificateParticipation.html', context)
+        return render(request, 'certificate/certificateParticipation.html', context)
 
     elif candid.certificate_type == 'CA_P': 
         return render(request, 'certificate/certificateCAPlat.html', context)
@@ -65,9 +65,13 @@ def certificate(request, cert_id):
         return render(request, 'certificate/certificateCAPart.html', context)
 
     elif candid.certificate_type == 'W': 
-        return Render.render('certificate/certificateWinner.html', context)
+        return render(request, 'certificate/certificateWinner.html', context)
+    elif candid.certificate_type == 'R1': 
+        return render(request, 'certificate/certificateFirstRunner.html', context)
+    elif candid.certificate_type == 'R2': 
+        return render(request, 'certificate/certificateSecondRunner.html', context)
     elif candid.certificate_type == 'MP':
-        return Render.render('certificate/certificateManshaktiParticipant.html',context)
+        return render('certificate/certificateManshaktiParticipant.html',context)
     elif candid.certificate_type == 'MW':
         return Render.render('certificate/certificateManshaktiWinner.html',context)
    
@@ -163,21 +167,56 @@ def send_email(request , alcher_id, certificate_url):
         content = render_to_string('main/emails/mailca.html', context)
     elif candid.certificate_type == 'P':
         content = render_to_string('main/emails/mailparticipant.txt', context)
-    elif candid.certificate_type == 'W':
-        content = render_to_string('main/emails/mailwinner.txt', context)
+    elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2':
+        # print(context.candid.certificate_url)
+        content = render_to_string('main/emails/mailwinner.html', context)
     elif candid.certificate_type == 'SA':
         content = render_to_string('main/emails/mailsa.txt', context)
     elif candid.certificate_type == 'MW':
         content = render_to_string('main/emails/mailmswinner.txt', context)
     elif candid.certificate_type == 'MP':
         content = render_to_string('main/emails/mailmsparticipant.txt', context)
-
     message = EmailMultiAlternatives(
         subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
         to = [candid.email],
     )
     message.attach_alternative(content, "text/html")
     message.send(fail_silently=False)
+    return render(request, 'main/mail_sent.html' , context)
+
+
+@login_required
+def send_email_to_all(request):
+    print("here")
+    candids = candidate.objects.all()
+
+    for candid in candids:
+        context = {
+            'candid' : candid
+        }
+        if candid.event == 'Parliamentry Debate':
+            content = render_to_string('main/emails/mailPD.txt', context)
+        elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
+            # html_message = render_to_string('main/emails/mailca.html', context)
+            # content = strip_tags(html_message)
+            content = render_to_string('main/emails/mailca.html', context)
+        elif candid.certificate_type == 'P':
+            content = render_to_string('main/emails/mailparticipant.html', context)
+        elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2':
+            # print(context.candid.certificate_url)
+            content = render_to_string('main/emails/mailwinner.html', context)
+        elif candid.certificate_type == 'SA':
+            content = render_to_string('main/emails/mailsa.txt', context)
+        elif candid.certificate_type == 'MW':
+            content = render_to_string('main/emails/mailmswinner.txt', context)
+        elif candid.certificate_type == 'MP':
+            content = render_to_string('main/emails/mailmsparticipant.txt', context)
+        message = EmailMultiAlternatives(
+            subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
+            to = [candid.email],
+        )
+        message.attach_alternative(content, "text/html")
+        message.send(fail_silently=False)
     return render(request, 'main/mail_sent.html' , context)
     
 
