@@ -70,6 +70,8 @@ def certificate(request, cert_id):
         return render(request, 'certificate/certificateFirstRunner.html', context)
     elif candid.certificate_type == 'R2': 
         return render(request, 'certificate/certificateSecondRunner.html', context)
+    elif candid.certificate_type == 'R':
+        return render(request, 'certificate/certificaterunner.html', context)
     elif candid.certificate_type == 'MP':
         return render('certificate/certificateManshaktiParticipant.html',context)
     elif candid.certificate_type == 'MW':
@@ -167,7 +169,7 @@ def send_email(request , alcher_id, certificate_url):
         content = render_to_string('main/emails/mailca.html', context)
     elif candid.certificate_type == 'P':
         content = render_to_string('main/emails/mailparticipant.txt', context)
-    elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2':
+    elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2' or candid.certificate_type == 'R':
         # print(context.candid.certificate_url)
         content = render_to_string('main/emails/mailwinner.html', context)
     elif candid.certificate_type == 'SA':
@@ -202,7 +204,7 @@ def send_email_to_all(request):
             content = render_to_string('main/emails/mailca.html', context)
         elif candid.certificate_type == 'P':
             content = render_to_string('main/emails/mailparticipant.html', context)
-        elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2':
+        elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2' or candid.certificate_type == 'R':
             # print(context.candid.certificate_url)
             content = render_to_string('main/emails/mailwinner.html', context)
         elif candid.certificate_type == 'SA':

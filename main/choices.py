@@ -7,6 +7,7 @@ CERTIFICATE_OPTIONS = [
         ('W' , 'Winner'),
         ('R1' , 'First Runner'),
         ('R2' , 'Second Runner'),
+        ('R' , 'Runner'),
         ('SA' , 'Special Achievement'),
         ('MP', 'Manshakti Participant'),
         ('MW', 'Manshakti Winner'),
