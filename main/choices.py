@@ -71,6 +71,7 @@ EVENT_OPTIONS = [
         ('India Quiz', 'India Quiz'),
         ('Manshakti Poetry', 'Manshakti Poetry'),
         ('Manshakti Art', 'Manshakti Art'),
+        ('Critical Damage', 'Critical Damage'),
         
 ]
 
