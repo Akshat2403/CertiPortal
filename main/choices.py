@@ -72,6 +72,8 @@ EVENT_OPTIONS = [
         ('Manshakti Poetry', 'Manshakti Poetry'),
         ('Manshakti Art', 'Manshakti Art'),
         ('Critical Damage', 'Critical Damage'),
-        
+        ('Just Reel It', 'Just Reel It'),
+        ('Best out of Waste', 'Best out of Waste'),       
+        ('Sixth String', 'Sixth String'),
 ]
 
