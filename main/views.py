@@ -162,22 +162,22 @@ def send_email(request , alcher_id, certificate_url):
     }
 
     if candid.event == 'Parliamentry Debate':
-        content = render_to_string('main/emails/mailPD.txt', context)
+        content = render_to_string('main/emails/mailPD.html', context)
     elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
         # html_message = render_to_string('main/emails/mailca.html', context)
         # content = strip_tags(html_message)
         content = render_to_string('main/emails/mailca.html', context)
     elif candid.certificate_type == 'P':
-        content = render_to_string('main/emails/mailparticipant.txt', context)
+        content = render_to_string('main/emails/mailparticipant.html', context)
     elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2' or candid.certificate_type == 'R':
         # print(context.candid.certificate_url)
         content = render_to_string('main/emails/mailwinner.html', context)
     elif candid.certificate_type == 'SA':
-        content = render_to_string('main/emails/mailsa.txt', context)
+        content = render_to_string('main/emails/mailsa.html', context)
     elif candid.certificate_type == 'MW':
-        content = render_to_string('main/emails/mailmswinner.txt', context)
+        content = render_to_string('main/emails/mailmswinner.html', context)
     elif candid.certificate_type == 'MP':
-        content = render_to_string('main/emails/mailmsparticipant.txt', context)
+        content = render_to_string('main/emails/mailmsparticipant.html', context)
     message = EmailMultiAlternatives(
         subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
         to = [candid.email],
@@ -197,7 +197,7 @@ def send_email_to_all(request):
             'candid' : candid
         }
         if candid.event == 'Parliamentry Debate':
-            content = render_to_string('main/emails/mailPD.txt', context)
+            content = render_to_string('main/emails/mailPD.html', context)
         elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
             # html_message = render_to_string('main/emails/mailca.html', context)
             # content = strip_tags(html_message)
@@ -208,11 +208,11 @@ def send_email_to_all(request):
             # print(context.candid.certificate_url)
             content = render_to_string('main/emails/mailwinner.html', context)
         elif candid.certificate_type == 'SA':
-            content = render_to_string('main/emails/mailsa.txt', context)
+            content = render_to_string('main/emails/mailsa.html', context)
         elif candid.certificate_type == 'MW':
-            content = render_to_string('main/emails/mailmswinner.txt', context)
+            content = render_to_string('main/emails/mailmswinner.html', context)
         elif candid.certificate_type == 'MP':
-            content = render_to_string('main/emails/mailmsparticipant.txt', context)
+            content = render_to_string('main/emails/mailmsparticipant.html', context)
         message = EmailMultiAlternatives(
             subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
             to = [candid.email],
