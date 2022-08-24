@@ -7,6 +7,7 @@ CERTIFICATE_OPTIONS = [
         ('W' , 'Winner'),
         ('R1' , 'First Runner'),
         ('R2' , 'Second Runner'),
+        ('R' , 'Runner'),
         ('SA' , 'Special Achievement'),
         ('MP', 'Manshakti Participant'),
         ('MW', 'Manshakti Winner'),
@@ -70,6 +71,9 @@ EVENT_OPTIONS = [
         ('India Quiz', 'India Quiz'),
         ('Manshakti Poetry', 'Manshakti Poetry'),
         ('Manshakti Art', 'Manshakti Art'),
-        
+        ('Critical Damage', 'Critical Damage'),
+        ('Just Reel It', 'Just Reel It'),
+        ('Best out of Waste', 'Best out of Waste'),       
+        ('Sixth String', 'Sixth String'),
 ]
 
