@@ -179,7 +179,7 @@ def send_email(request , alcher_id, certificate_url):
     elif candid.certificate_type == 'MP':
         content = render_to_string('main/emails/mailmsparticipant.html', context)
     message = EmailMultiAlternatives(
-        subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
+        subject = "Alcheringa'22 Certification",
         to = [candid.email],
     )
     message.attach_alternative(content, "text/html")
@@ -214,7 +214,7 @@ def send_email_to_all(request):
         elif candid.certificate_type == 'MP':
             content = render_to_string('main/emails/mailmsparticipant.html', context)
         message = EmailMultiAlternatives(
-            subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
+            subject =  "Alcheringa'22 Certification",
             to = [candid.email],
         )
         message.attach_alternative(content, "text/html")
@@ -379,7 +379,7 @@ def massmail(request,event_name):
     
     for candid in candids:
         context = {'candid' : candid, }
-        subject = 'Certificate Alcheringa: ' + str(current_year())
+        subject =  "Alcheringa'22 Certification"
         if candid.event == 'Parliamentry Debate':
             content = render_to_string('main/emails/mailPD.txt', context)
         elif candid.certificate_type == 'P':
@@ -428,7 +428,7 @@ def massmailca(request):
         context = {'candid' : candid, }
         content = render_to_string('main/emails/mailca.html', context)
         message = EmailMultiAlternatives(
-            subject = 'Certification for Campus Ambassador Program, Alcheringa ' + str(current_year()),
+            subject =  "Alcheringa'22 Certification",
             to = [candid.email],
         )
         message.attach_alternative(content, "text/html")
@@ -457,7 +457,7 @@ def massmailsa(request):
     
     for candid in candids:
         context = {'candid' : candid, }
-        subject = 'Certificate Alcheringa: ' + str(current_year())
+        subject =  "Alcheringa'22 Certification"
         content = render_to_string('main/emails/mailsa.txt', context)
         sender = 'publicrelations23@alcheringa.in'
         recipient = [candid.email]
