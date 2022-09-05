@@ -15,6 +15,7 @@ urlpatterns = [
     re_path(r'^certificate/(?P<cert_id>[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+-20[0-9]{2}-[0-9]+-[0-9A-Za-z]{16})/$', views.certificate , name="certificate"),
     path('massmail/<str:event_name>', views.massmail, name="massmail"),
     path('sendall', views.send_email_to_all, name="sendall"),
+    path('deleteall', views.delete_all, name="deleteall"),
     path('calist', views.calist, name="calist"),
     path('massmailca/', views.massmailca, name="massmailca"),
     path('salist', views.salist, name="salist"),

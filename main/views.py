@@ -138,6 +138,12 @@ def candidList(request):
     print(candids)
     return render(request, 'main/candidlist.html', context)
 
+@login_required
+def delete_all(request):
+    candids = candidate.objects.all()
+    for candid in candids:
+        candid.delete()
+    return redirect('candidList')
 
 @login_required
 def delete_candidate(request, certificate_url):
