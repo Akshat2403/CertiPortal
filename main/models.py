@@ -11,6 +11,7 @@ class candidate(models.Model):
     position = models.IntegerField(default=0, blank=True)
     college = models.CharField(max_length=255 , null=True, blank=True)
     is_generated = models.BooleanField(default = None)
+    is_sent = models.BooleanField(default=False)
     is_valid = models.BooleanField(default = True)
     certificate_url = models.CharField(max_length=255 , blank=True)
     event = models.CharField(max_length=50, choices=EVENT_OPTIONS, default='', blank = False)

@@ -23,11 +23,12 @@
 
 
 <a href= "{% url 'massmail' event_name %}"><button>SEND MAIL TO ALL PARTICIPANTS IN {{ event_name }}</button></a>
-<a href= "{% url 'sendall' %}"><button>SEND MAIL TO ALL</button></a>
+<a href= "{% url 'sendall' %}"><button>SEND MAIL TO FIRST 60</button></a>
 <a href= "{% url 'deleteall' %}"><button>DELETE ALL</button></a>
 
 <br>
 <br>
+<h1>Unsent Candids</h1>
 <table rules="all">
 	<thead>
 		<th>ALCHER_ID</th>
@@ -77,6 +78,46 @@
 
 	<a href = "{% url 'candidList' %}"><button>View all candidates</button></a>
 	<a href = "{% url 'index' %}"><button> Home </button></a>
+
+	<h1>Sent Candids</h1>
+	<table rules="all">
+		<thead>
+			<th>ALCHER_ID</th>
+			<th>NAME</th>
+			<th>CERTIFICATE_TYPE</th>
+			<th>Position</th>
+			<th>College</th>
+			<th>EVENT</th>
+			<th>Special Achievement</th>
+			<th>IS_VALID</th>
+			<th>EMAIL</th>
+		</thead>
+		<tbody>
+			{% for candid in sent_candids %}
+			<tr>
+				<td><a href="{% url 'candidUpdateForm' candid.pk %}" title="Edit">{{candid.alcher_id}}</a></td>
+				<td>{{candid.name}}</td>
+				<td>{{candid.get_certificate_type_display}}</td>
+				<!-- <td>{{candid.position}}</td> -->
+				<td>{{candid.college}}</td>
+				{% if candid.certificate_type == 'CA' %}
+				<td></td>
+				{% else %}
+				<td>{{candid.event}}</td>
+				{% endif %}
+				<td>{{ candid.special_achievement }} </td>
+				<td>{{candid.is_valid}}</td>
+				<td>{{candid.email}}</td>
+				{% if candid.is_valid and candid.is_generated %}
+				<td><a href="{% url 'send_email' candid.alcher_id candid.certificate_url %}"><button>Send Email</button></a></td>
+				<td><a href="{% url 'certificate' candid.certificate_url %}" target="_blank"><button>View Certificate</button></a></td>
+				<td><a href="{% url 'certificate' candid.certificate_url %}" download="{{ candid.name }}_{{ candid.event }}.pdf"><button>Save Certificate</button></a></td>
+				<td><a href="{% url 'delete_candidate' candid.certificate_url %}"><button>Delete</button></a></td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
 
 <script>
 		EVENT_OPTIONS = [

@@ -128,11 +128,13 @@ def candidForm(request):
 @login_required
 def candidList(request):
     # candids = candidate.objects.filter(year=current_year()-1)     #for previous year ex: 2020
-    candids = candidate.objects.filter(year=current_year())   #for current year ex: 2021
+    candids = candidate.objects.filter(is_sent = False)   #for current year ex: 2021
+    sent_candids = candidate.objects.filter(is_sent = True)   #for current year ex: 2021
     event_name='none'
     context = {
         'candids': candids,
         'event_name': event_name,
+        'sent_candids': sent_candids
     }
     print("Now the candids data will be printed")
     print(candids)
@@ -196,12 +198,14 @@ def send_email(request , alcher_id, certificate_url):
 @login_required
 def send_email_to_all(request):
     print("here")
-    candids = candidate.objects.all()
+    candids = candidate.objects.filter(is_sent = False)[:60]
 
     for candid in candids:
         context = {
             'candid' : candid
         }
+        candid.is_sent = True
+        candid.save()
         if candid.event == 'Parliamentry Debate':
             content = render_to_string('main/emails/mailPD.html', context)
         elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
