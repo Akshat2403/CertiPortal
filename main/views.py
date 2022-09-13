@@ -30,6 +30,7 @@ def certificateNotFound(request):
     return render(request , 'main/certificateNotFound.html')
 
 def certificate(request, cert_id):
+    cert_id = cert_id.split("-")[0]
     try:
         candid = candidate.objects.get(certificate_url=cert_id)
         print(candid.certificate_type)
@@ -96,7 +97,7 @@ def generateUrl(email , year):
     #     latest_cert = candid_certificates.first()
     #     arr = latest_cert.certificate_url.split('-')
     #     last_num = int(arr[4])
-    new_url = email + '-' + str(year) + '-' + str(last_num+1) + '-' + os.urandom(8).hex()
+    new_url = email
     return new_url
 
 
