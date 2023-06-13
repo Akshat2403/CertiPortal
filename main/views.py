@@ -1,4 +1,3 @@
-from turtle import pos
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
@@ -15,8 +14,11 @@ from post_office import mail
 import os
 from django.http import HttpResponse
 from django.utils.html import strip_tags
-from django.core.mail import EmailMultiAlternatives
+from django.core.mail import EmailMultiAlternatives, EmailMessage
 from django.db.models import Q
+from io import BytesIO
+from django.core.files import File
+from reportlab.pdfgen import canvas
 
 # Create your views here.
 def index(request):
@@ -28,6 +30,31 @@ def logoutView(request):
 
 def certificateNotFound(request):
     return render(request , 'main/certificateNotFound.html')
+
+def create_certificate_pdf(candid):
+    # Create a file-like buffer to receive PDF data.
+    buffer = BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw the certificate content on the PDF.
+    p.drawString(100, 750, f"Name: {candid.name}")
+    p.drawString(100, 735, f"Event: {candid.event}")
+    p.drawString(100, 720, f"Position: {candid.position}")
+    p.drawString(100, 705, f"College: {candid.college}")
+    p.drawString(100, 690, f"Achievement: {candid.special_achievement}")
+
+    # Close the PDF object cleanly and save the buffer.
+    p.showPage()
+    p.save()
+
+    # Move to the beginning of the StringIO buffer.
+    buffer.seek(0)
+
+    # Wrap the buffer in a File object.
+    pdf = File(buffer, name=f"{candid.alcher_id}_certificate.pdf")
+    return pdf
 
 def certificate(request, cert_id):
     cert_id = cert_id.split("-")[0]
@@ -169,7 +196,7 @@ def send_email(request , alcher_id, certificate_url):
     context = {
         'candid' : candid
     }
-
+    
     if candid.event == 'Parliamentry Debate':
         content = render_to_string('main/emails/mailPD.html', context)
     elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
@@ -187,13 +214,32 @@ def send_email(request , alcher_id, certificate_url):
         content = render_to_string('main/emails/mailmswinner.html', context)
     elif candid.certificate_type == 'MP':
         content = render_to_string('main/emails/mailmsparticipant.html', context)
-    message = EmailMultiAlternatives(
-        subject = "Alcheringa'22 Certification",
-        to = [candid.email],
-    )
-    message.attach_alternative(content, "text/html")
-    message.send(fail_silently=False)
-    return render(request, 'main/mail_sent.html' , context)
+
+    # Generate the certificate PDF.
+    certificate_pdf = create_certificate_pdf(candid)
+
+    # message = EmailMultiAlternatives(
+    #     subject = "Alcheringa'22 Certification",
+    #     to = [candid.email],
+    # )
+    # message.attach_alternative(content, "text/html")
+    # message.send(fail_silently=False)
+
+     # Create the email message.
+    subject = "Alcheringa'22 Certification"
+    body = render_to_string('main/emails/mail.html', context)
+    from_email = 'your_email@example.com'
+    to_email = [candid.email]
+
+    email = EmailMessage(subject, body, from_email, to_email)
+
+    # Attach the certificate PDF to the email.
+    email.attach(certificate_pdf.name, certificate_pdf.read(), 'application/pdf')
+
+     # Send the email.
+    email.send()
+
+    return render(request, 'main/mail_sent.html' , context, {'email': candid.email} )
 
 
 @login_required
