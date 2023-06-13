@@ -19,6 +19,8 @@ from django.db.models import Q
 from io import BytesIO
 from django.core.files import File
 from reportlab.pdfgen import canvas
+import pdfkit
+from django.template.loader import render_to_string
 
 # Create your views here.
 def index(request):
@@ -31,30 +33,59 @@ def logoutView(request):
 def certificateNotFound(request):
     return render(request , 'main/certificateNotFound.html')
 
+def select_certificate_template(candid):
+    if candid.event == 'Parliamentry Debate':
+        return 'certificate/certificatePD.html'
+    elif candid.certificate_type == 'SA':
+        return 'certificate/certificateSA.html'
+    elif candid.certificate_type == 'P': 
+        return 'certificate/certificateParticipation.html'
+    elif candid.certificate_type == 'CA_P': 
+        return 'certificate/certificateCAPlat.html'
+    elif candid.certificate_type == 'CA_G': 
+        return 'certificate/certificateCAGold.html'
+    elif candid.certificate_type == 'CA_S': 
+        return 'certificate/certificateCASilver.html'
+    elif candid.certificate_type == 'CA_Part': 
+        return 'certificate/certificateCAPart.html'
+    elif candid.certificate_type == 'W': 
+        return 'certificate/certificateWinner.html'
+    elif candid.certificate_type == 'R1': 
+        return 'certificate/certificateFirstRunner.html'
+    elif candid.certificate_type == 'R2': 
+        return 'certificate/certificateSecondRunner.html'
+    elif candid.certificate_type == 'R':
+        return 'certificate/certificaterunner.html'
+    elif candid.certificate_type == 'MP':
+        return 'certificate/certificateManshaktiParticipant.html'
+    elif candid.certificate_type == 'MW':
+        return 'certificate/certificateManshaktiWinner.html'
+    # ... Add other conditions for different certificate types
+
+    return 'certificate/default_certificate.html'  # Default template if no condition is met
+
 def create_certificate_pdf(candid):
-    # Create a file-like buffer to receive PDF data.
-    buffer = BytesIO()
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{candid.alcher_id}_certificate.pdf"'
 
-    # Create the PDF object, using the buffer as its "file."
-    p = canvas.Canvas(buffer)
+    # Select the appropriate certificate template based on the certificate type.
+    template_path = select_certificate_template(candid)
 
-    # Draw the certificate content on the PDF.
-    p.drawString(100, 750, f"Name: {candid.name}")
-    p.drawString(100, 735, f"Event: {candid.event}")
-    p.drawString(100, 720, f"Position: {candid.position}")
-    p.drawString(100, 705, f"College: {candid.college}")
-    p.drawString(100, 690, f"Achievement: {candid.special_achievement}")
+    # Render the HTML content.
+    html_content = render_to_string(template_path, {
+        'candid_name': candid.name,
+        'candid_event': candid.event,
+        'candid_position': candid.position,
+        'candid_college': candid.college,
+        'candid_achievement': candid.special_achievement,
+    })
 
-    # Close the PDF object cleanly and save the buffer.
-    p.showPage()
-    p.save()
+    # Convert the HTML content to a PDF file and write it to the response.
+    pdfkit.from_string(html_content, None, options={'quiet': ''}, file_object=response)
 
-    # Move to the beginning of the StringIO buffer.
-    buffer.seek(0)
+    return response
 
-    # Wrap the buffer in a File object.
-    pdf = File(buffer, name=f"{candid.alcher_id}_certificate.pdf")
-    return pdf
 
 def certificate(request, cert_id):
     cert_id = cert_id.split("-")[0]
@@ -226,15 +257,23 @@ def send_email(request , alcher_id, certificate_url):
     # message.send(fail_silently=False)
 
      # Create the email message.
-    subject = "Alcheringa'22 Certification"
-    body = render_to_string('main/emails/mail.html', context)
-    from_email = 'your_email@example.com'
-    to_email = [candid.email]
+    # subject = "Alcheringa'22 Certification"
+    # body = render_to_string('main/emails/mail.html', context)
+    # from_email = 'your_email@example.com'
+    # to_email = [candid.email]
 
-    email = EmailMessage(subject, body, from_email, to_email)
+    # email = EmailMessage(subject, body, from_email, to_email)
 
+    email = EmailMessage(
+        'Certificate of Achievement',
+        f'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!',
+        'youremail@example.com',  # Replace with your email
+        [candid.email],
+    )
+    
     # Attach the certificate PDF to the email.
-    email.attach(certificate_pdf.name, certificate_pdf.read(), 'application/pdf')
+    # email.attach(certificate_pdf.name, certificate_pdf.read(), 'application/pdf')
+    email.attach(f'{candid.alcher_id}_certificate.pdf', certificate_pdf.getvalue(), 'application/pdf')
 
      # Send the email.
     email.send()
