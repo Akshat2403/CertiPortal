@@ -81,8 +81,11 @@ def create_certificate_pdf(candid):
         'candid_achievement': candid.special_achievement,
     })
 
-    # Convert the HTML content to a PDF file and write it to the response.
-    pdfkit.from_string(html_content, None, options={'quiet': ''}, file_object=response)
+    # Convert the HTML content to a PDF file.
+    pdf_content = pdfkit.from_string(html_content, None, options={'quiet': ''})
+
+    # Write the PDF content to the response object.
+    response.write(pdf_content)
 
     return response
 
@@ -213,56 +216,37 @@ def delete_candidate(request, certificate_url):
     return redirect('candidList')
 
 @login_required
-def send_email(request , alcher_id, certificate_url):
-    print("here")
+def send_email(request, alcher_id, certificate_url):
     try:
-        candid = candidate.objects.get(alcher_id = alcher_id, certificate_url = certificate_url)
+        candid = candidate.objects.get(alcher_id=alcher_id, certificate_url=certificate_url)
     except candidate.DoesNotExist:
         candid = None
 
     if not candid or not candid.is_valid:
-        #Candidate does not exist return to index.html
         return render(request, 'registration/index.html')
 
-    context = {
-        'candid' : candid
+    context = {'candid': candid}
+
+    # Map certificate types to email templates.
+    email_templates = {
+        'Parliamentry Debate': 'main/emails/mailPD.html',
+        'CA_G': 'main/emails/mailca.html',
+        'CA_P': 'main/emails/mailca.html',
+        'CA_S': 'main/emails/mailca.html',
+        'CA_Part': 'main/emails/mailca.html',
+        'P': 'main/emails/mailparticipant.html',
+        'W': 'main/emails/mailwinner.html',
+        'R1': 'main/emails/mailwinner.html',
+        'R2': 'main/emails/mailwinner.html',
+        'R': 'main/emails/mailwinner.html',
+        'SA': 'main/emails/mailsa.html',
+        'MW': 'main/emails/mailmswinner.html',
+        'MP': 'main/emails/mailmsparticipant.html',
     }
-    
-    if candid.event == 'Parliamentry Debate':
-        content = render_to_string('main/emails/mailPD.html', context)
-    elif candid.certificate_type == 'CA_G' or  candid.certificate_type == 'CA_P' or  candid.certificate_type == 'CA_S' or candid.certificate_type == 'CA_Part':
-        # html_message = render_to_string('main/emails/mailca.html', context)
-        # content = strip_tags(html_message)
-        content = render_to_string('main/emails/mailca.html', context)
-    elif candid.certificate_type == 'P':
-        content = render_to_string('main/emails/mailparticipant.html', context)
-    elif candid.certificate_type == 'W' or candid.certificate_type == 'R1' or candid.certificate_type == 'R2' or candid.certificate_type == 'R':
-        # print(context.candid.certificate_url)
-        content = render_to_string('main/emails/mailwinner.html', context)
-    elif candid.certificate_type == 'SA':
-        content = render_to_string('main/emails/mailsa.html', context)
-    elif candid.certificate_type == 'MW':
-        content = render_to_string('main/emails/mailmswinner.html', context)
-    elif candid.certificate_type == 'MP':
-        content = render_to_string('main/emails/mailmsparticipant.html', context)
 
-    # Generate the certificate PDF.
+    content = render_to_string(email_templates.get(candid.event, email_templates.get(candid.certificate_type)), context)
+
     certificate_pdf = create_certificate_pdf(candid)
-
-    # message = EmailMultiAlternatives(
-    #     subject = "Alcheringa'22 Certification",
-    #     to = [candid.email],
-    # )
-    # message.attach_alternative(content, "text/html")
-    # message.send(fail_silently=False)
-
-     # Create the email message.
-    # subject = "Alcheringa'22 Certification"
-    # body = render_to_string('main/emails/mail.html', context)
-    # from_email = 'your_email@example.com'
-    # to_email = [candid.email]
-
-    # email = EmailMessage(subject, body, from_email, to_email)
 
     email = EmailMessage(
         'Certificate of Achievement',
@@ -270,15 +254,12 @@ def send_email(request , alcher_id, certificate_url):
         'youremail@example.com',  # Replace with your email
         [candid.email],
     )
-    
-    # Attach the certificate PDF to the email.
-    # email.attach(certificate_pdf.name, certificate_pdf.read(), 'application/pdf')
+
     email.attach(f'{candid.alcher_id}_certificate.pdf', certificate_pdf.getvalue(), 'application/pdf')
 
-     # Send the email.
     email.send()
 
-    return render(request, 'main/mail_sent.html' , context, {'email': candid.email} )
+    return render(request, 'main/mail_sent.html', context, {'email': candid.email})
 
 
 @login_required
