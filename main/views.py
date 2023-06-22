@@ -11,7 +11,6 @@ from .choices import *
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator, EmailValidator
 from post_office import mail
-import os
 from django.http import HttpResponse
 from django.utils.html import strip_tags
 from django.core.mail import EmailMultiAlternatives, EmailMessage
@@ -20,7 +19,8 @@ from io import BytesIO
 from django.core.files import File
 from reportlab.pdfgen import canvas
 import pdfkit
-from django.template.loader import render_to_string
+import tempfile
+import os
 
 # Create your views here.
 def index(request):
@@ -64,6 +64,54 @@ def select_certificate_template(candid):
 
     return 'certificate/default_certificate.html'  # Default template if no condition is met
 
+# def create_certificate_pdf(candid):
+#     # Create the HttpResponse object with the appropriate PDF headers.
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'attachment; filename="{candid.alcher_id}_certificate.pdf"'
+
+#     # Select the appropriate certificate template based on the certificate type.
+#     template_path = select_certificate_template(candid)
+#     print(template_path)
+#     # Render the HTML content.
+
+#     html_content = render_to_string(template_path, {
+#         'candid_name': candid.name,
+#         'candid_event': candid.event,
+#         'candid_position': candid.position,
+#         'candid_college': candid.college,
+#         'candid_achievement': candid.special_achievement,
+#     })
+#     # print(html_content)
+
+#     # html_content = """
+#     # <!DOCTYPE html>
+#     # <html>
+#     # <head>
+#     #     <title>Test HTML to PDF</title>
+#     # </head>
+#     # <body>
+#     #     <h1>Hello, world!</h1>
+#     #     <p>This is a test HTML file.</p>
+#     # </body>
+#     # </html>
+#     # """
+
+#     # Convert the HTML content to a PDF file.
+#     # pdfkit.configuration(wkhtmltopdf=')
+#     path_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+#     config = pdfkit.configuration(wkhtmltopdf=path_wkhtmltopdf)
+
+#     # pdf_file_path = 'main/test.pdf'
+#     # pdfkit.from_string(html_content, pdf_file_path)
+
+#     pdf_content = pdfkit.from_string(html_content,configuration=config, options={"enable-local-file-access": "",'quiet': ''})
+
+#     # Write the PDF content to the response object.
+#     response.write(pdf_content)
+
+#     return response
+
+
 def create_certificate_pdf(candid):
     # Create the HttpResponse object with the appropriate PDF headers.
     response = HttpResponse(content_type='application/pdf')
@@ -82,7 +130,17 @@ def create_certificate_pdf(candid):
     })
 
     # Convert the HTML content to a PDF file.
-    pdf_content = pdfkit.from_string(html_content, None, options={'quiet': ''})
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        pdf_path = temp_file.name + '.pdf'
+
+    pdfkit.from_string(html_content, pdf_path, configuration=pdfkit.configuration(wkhtmltopdf='main\wkhtmltopdf.exe'))
+
+    # Read the PDF file content.
+    with open(pdf_path, 'rb') as pdf_file:
+        pdf_content = pdf_file.read()
+
+    # Remove the temporary PDF file.
+    os.remove(pdf_path)
 
     # Write the PDF content to the response object.
     response.write(pdf_content)
