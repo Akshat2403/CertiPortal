@@ -1,4 +1,8 @@
 from django.contrib import admin
-from .models import candidate
+from .models import *
+from import_export.admin import ImportExportModelAdmin
 # Register your models here.
-admin.site.register(candidate)
+@admin.register(candidate)
+class CandidateAdmin(ImportExportModelAdmin):
+    pass
+

@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate
 from django.contrib import messages
 from .choices import EVENT_OPTIONS,CERTIFICATE_OPTIONS
 from django.db.models import Q
+from .resources import *
+from tablib import Dataset
+from django.http import HttpResponse
 # Create your views here.
 # Login view
 def login(request):
@@ -44,11 +47,68 @@ def addCandidate(request):
             messages.info('Email already exists')
     context={'events':EVENT_OPTIONS,'types':CERTIFICATE_OPTIONS}
     return render(request,'main/candidateform.html',context);
+def update_candidate(request,pk):
+    candid = candidate.objects.filter(id=pk).first()
+    if request.method == 'POST':
+        try:
+            
+            
+            print(candid)
+            candid.name = request.POST['name']
+            candid.college = request.POST['college']
+            candid.event = request.POST['event']
+            candid.certificate_type = request.POST['Certificate']
+            candid.email = request.POST['email']
+            candid.save()
+            return redirect('dashboard')
+        except:
+            messages.error(request, 'An error occurred while updating the candidate.')
+    
+
+    context = {
+        'candidate':candid,
+        
+        'events': EVENT_OPTIONS,  # Make sure to define EVENT_OPTIONS in your context
+        'types': CERTIFICATE_OPTIONS  # Make sure to define CERTIFICATE_OPTIONS in your context
+    }
+    return render(request, 'main/candidateform.html', context)
+
+
 
 def delete_candidate(request, email):
     candid = candidate.objects.filter(email=email).first()
     candid.delete()
     return redirect('dashboard')
+
+#add csv file
+def addcsv(request):
+    if request.method=="POST":
+        candidate_resource = CandidateResource()
+        dataset = Dataset()
+        new_candidate = request.FILES.get('document')
+        if new_candidate is None:
+            messages.info(request, 'No file selected')
+            return render(request, 'main/csvform.html')
+        imported_data = dataset.load(new_candidate.read(),format = 'xlsx')
+        for data in imported_data:
+            email = data[7]  # Assuming the email is at index 7 in the imported_data list
+            if candidate.objects.filter(email=email).exists():
+                        # Skip the record if the email already exists
+                continue
+            value = candidate(
+                data[0],
+                data[1],
+                data[2],
+                data[3],
+                data[4],
+                data[5],
+                data[6],
+                data[7]
+            )
+            value.save()
+            messages.info(request, 'data has been added successfully')
+    return render(request,'main/csvform.html')
+
 #logout view
 def logout(request):
     authout(request)

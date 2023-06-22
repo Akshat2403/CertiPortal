@@ -1,7 +1,7 @@
 {% extends 'partials/base.html' %} {% load static %} {% block content %}
 {%include "partials/navbar.html" %}
 <form class="p-8" method="POST">
-  {% csrf_token%}
+  {% csrf_token %}
   <div class="mb-6">
     <label
       for="email"
@@ -12,6 +12,7 @@
       type="email"
       id="email"
       name="email"
+      value="{{ candidate.email }}"
       class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
       placeholder="name@flowbite.com"
       required
@@ -27,6 +28,7 @@
       type="text"
       name="name"
       id="name"
+      value="{{candidate.name}}"
       placeholder="Robin Joseph"
       class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
       required
@@ -42,6 +44,7 @@
       type="text"
       name="college"
       id="college"
+      value = "{{candidate.college}}"
       placeholder="Indian Institute of Technolog Guwahati"
       class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
       required
@@ -57,10 +60,11 @@
     <select
       name="Certificate"
       id="Certificate"
+      
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {% for type in types%}
-      <option value="{{type.0}}">{{ type.1}}</option>
+      <option value="{{candidate.certificate_type}}">{{ type.1}}</option>
       {%endfor%}
     </select>
   </div>
@@ -76,7 +80,7 @@
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {% for event in events%}
-      <option value="{{event.0}}">{{ event.1}}</option>
+      <option value="{{candidate.event}}">{{ event.1}}</option>
       {%endfor%}
     </select>
   </div>

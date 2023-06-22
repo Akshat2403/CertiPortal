@@ -36,12 +36,12 @@
           >
           {%endif%}
           <a
-            href="{%  url 'delete' candidate.email%}"
+            href="{%  url 'delete' candidate.email %}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
             >Delete</a
           >
           <a
-            href="#"
+            href="{% url 'update' candidate.id %}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
             >Edit</a
           >
