@@ -32,6 +32,7 @@ def dashboard(request,sent=0):
     
     return  render(request,'main/dashboard.html',context)
 
+
 #add Candiate form
 def addCandidate(request):
     if request.method=='POST':
@@ -91,22 +92,19 @@ def addcsv(request):
             return render(request, 'main/csvform.html')
         imported_data = dataset.load(new_candidate.read(),format = 'xlsx')
         for data in imported_data:
-            email = data[7]  # Assuming the email is at index 7 in the imported_data list
-            if candidate.objects.filter(email=email).exists():
-                        # Skip the record if the email already exists
-                continue
+            
             value = candidate(
                 data[0],
                 data[1],
                 data[2],
                 data[3],
+                False,
+                False,
                 data[4],
                 data[5],
-                data[6],
-                data[7]
             )
             value.save()
-            messages.info(request, 'data has been added successfully')
+        messages.info(request, 'data has been added successfully')
     return render(request,'main/csvform.html')
 
 #logout view
