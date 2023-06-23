@@ -58,13 +58,13 @@
       >Select Certificate Type</label
     >
     <select
-      name="Certificate"
+      name="Certificate1"
       id="Certificate"
       
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {% for type in types%}
-      <option value="{{candidate.certificate_type}}">{{ type.1}}</option>
+      <option value="{{type.0}}">{{ type.1}}</option>
       {%endfor%}
     </select>
   </div>
@@ -75,12 +75,12 @@
       >Select Event</label
     >
     <select
-      name="event"
+      name="event1"
       id="countries"
       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
     >
       {% for event in events%}
-      <option value="{{candidate.event}}">{{ event.1}}</option>
+      <option value="{{event.0}}">{{ event.1}}</option>
       {%endfor%}
     </select>
   </div>

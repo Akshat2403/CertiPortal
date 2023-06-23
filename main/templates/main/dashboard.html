@@ -30,7 +30,7 @@
         <td class="px-6 py-4 text-right">
           {% if not candidate.is_sent%}
           <a
-            href="#"
+            href="{% url 'send_email' email=candidate.email %}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
             >Send mail</a
           >
@@ -44,6 +44,11 @@
             href="{% url 'update' candidate.id %}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
             >Edit</a
+          >
+          <a
+            href="{% url 'testhtml' candidate.id %}"
+            class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
+            >Certificate</a
           >
         </td>
       </tr>

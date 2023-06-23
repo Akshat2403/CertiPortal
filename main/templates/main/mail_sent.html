@@ -1,0 +1,13 @@
+{% extends 'partials/base.html' %}
+
+{% block title %}Mail sent!{% endblock %}
+
+{% block content %}
+  <p>
+    Email sent successfully to {{candid.name}} .
+  </p>
+  <a href="{% url 'addCandidate' %}">Enter Candidate data</a>|<a href="{% url 'dashboard' %}">View Candidate data</a>
+<br>
+  <a href="{% url 'logout' %}">logout</a>
+  
+{% endblock %}

@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Certificate</title>
+	<style>
+		@page {
+    size: letter landscape;
+    margin: 2cm;
+    background: url("https://i.ibb.co/hBtWH6b/pd-certificate-01.png");
+
+
+
+     @frame name_frame {          /* Content Frame */
+            left: 315pt; width: 400pt; top: 323pt; height: 25pt;
+            -pdf-frame-content: name_content;
+            /* -pdf-frame-border: 1; */
+            }
+
+}
+
+#name_content{
+	font-size: 15px;
+}
+
+
+
+	</style>
+</head>
+<body>
+	<div id="name_content"><h2>{{ candid_name }}</h2></div>
+</body>
+</html>

@@ -10,4 +10,5 @@ urlpatterns = [
     path('delete/<str:email>',views.delete_candidate,name='delete'),
     path('update/<str:pk>', views.update_candidate, name="update"),
     path('logout',views.logout,name='logout'),
+    path('mail_sent/<str:email>', views.send_email , name="send_email"),
 ]

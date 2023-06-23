@@ -9,7 +9,18 @@ from django.db.models import Q
 from .resources import *
 from tablib import Dataset
 from django.http import HttpResponse
-# Create your views here.
+from io import BytesIO
+from django.core.files import File
+from reportlab.pdfgen import canvas
+import pdfkit
+import tempfile
+import os
+from django.core.mail import EmailMultiAlternatives, EmailMessage
+from django.core.validators import RegexValidator, EmailValidator
+from django.utils.html import strip_tags
+from django.core.exceptions import ValidationError
+from django.template.loader import render_to_string
+
 # Login view
 def login(request):
     if request.method=='POST':
@@ -40,14 +51,15 @@ def addCandidate(request):
             name=request.POST['name']
             email=request.POST['email']
             college=request.POST['college']
-            event=request.POST['event']
-            certi_type=request.POST['Certificate']
+            event=request.POST['event1']
+            certi_type=request.POST['Certificate1']
             candid=candidate(name=name,email=email,college=college,certificate_type=certi_type,event=event)
             candid.save()
         except:
             messages.info('Email already exists')
     context={'events':EVENT_OPTIONS,'types':CERTIFICATE_OPTIONS}
     return render(request,'main/candidateform.html',context);
+
 def update_candidate(request,pk):
     candid = candidate.objects.filter(id=pk).first()
     if request.method == 'POST':
@@ -57,8 +69,8 @@ def update_candidate(request,pk):
             print(candid)
             candid.name = request.POST['name']
             candid.college = request.POST['college']
-            candid.event = request.POST['event']
-            candid.certificate_type = request.POST['Certificate']
+            candid.event = request.POST['event1']
+            candid.certificate_type = request.POST['Certificate1']
             candid.email = request.POST['email']
             candid.save()
             return redirect('dashboard')
@@ -111,3 +123,121 @@ def addcsv(request):
 def logout(request):
     authout(request)
     return redirect('login')
+
+
+def select_certificate_template(candid):
+    if candid.event == 'Parliamentry Debate':
+        return 'certificate/certificatePD.html'
+    elif candid.certificate_type == 'SA':
+        return 'certificate/certificateSA.html'
+    elif candid.certificate_type == 'P': 
+        return 'certificate/certificateParticipation.html'
+    elif candid.certificate_type == 'CA_P': 
+        return 'certificate/certificateCAPlat.html'
+    elif candid.certificate_type == 'CA_G': 
+        return 'certificate/certificateCAGold.html'
+    elif candid.certificate_type == 'CA_S': 
+        return 'certificate/certificateCASilver.html'
+    elif candid.certificate_type == 'CA_Part': 
+        return 'certificate/certificateCAPart.html'
+    elif candid.certificate_type == 'W': 
+        return 'certificate/certificateWinner.html'
+    elif candid.certificate_type == 'R1': 
+        return 'certificate/certificateFirstRunner.html'
+    elif candid.certificate_type == 'R2': 
+        return 'certificate/certificateSecondRunner.html'
+    elif candid.certificate_type == 'R':
+        return 'certificate/certificaterunner.html'
+    elif candid.certificate_type == 'MP':
+        return 'certificate/certificateManshaktiParticipant.html'
+    elif candid.certificate_type == 'MW':
+        return 'certificate/certificateManshaktiWinner.html'
+    # ... Add other conditions for different certificate types
+
+    return 'certificate/default_certificate.html'  # Default template if no condition is met
+
+def create_certificate_pdf(candid):
+    # Create the HttpResponse object with the appropriate PDF headers.
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{candid.name + candid.email}_certificate.pdf"'
+
+    # Select the appropriate certificate template based on the certificate type.
+    template_path = select_certificate_template(candid)
+
+    # Render the HTML content.
+    html_content = render_to_string(template_path, {
+        'candid_name': candid.name,
+        'candid_event': candid.event,
+        # 'candid_position': candid.position,
+        'candid_college': candid.college,
+        # 'candid_achievement': candid.special_achievement,
+    })
+
+    # Convert the HTML content to a PDF file.
+    with tempfile.NamedTemporaryFile(delete=False) as temp_file:
+        pdf_path = temp_file.name + '.pdf'
+
+    pdfkit.from_string(html_content, pdf_path, configuration=pdfkit.configuration(wkhtmltopdf='main\wkhtmltopdf.exe'))
+
+    # Read the PDF file content.
+    with open(pdf_path, 'rb') as pdf_file:
+        pdf_content = pdf_file.read()
+
+    # Remove the temporary PDF file.
+    os.remove(pdf_path)
+
+    # Write the PDF content to the response object.
+    response.write(pdf_content)
+
+    return response
+
+
+# @login_required
+def send_email(request,email):
+    try:
+        candid = candidate.objects.get(email=email)
+    except candidate.DoesNotExist:
+        candid = None
+
+    if not candid or not candid.is_valid:
+        return render(request, 'main/candidateform.html')
+
+    context = {'candid': candid}
+
+    # Map certificate types to email templates.
+    # email_templates = {
+    #     'Parliamentry Debate': 'main/emails/mailPD.html',
+    #     'CA_G': 'main/emails/mailca.html',
+    #     'CA_P': 'main/emails/mailca.html',
+    #     'CA_S': 'main/emails/mailca.html',
+    #     'CA_Part': 'main/emails/mailca.html',
+    #     'P': 'main/emails/mailparticipant.html',
+    #     'W': 'main/emails/mailwinner.html',
+    #     'R1': 'main/emails/mailwinner.html',
+    #     'R2': 'main/emails/mailwinner.html',
+    #     'R': 'main/emails/mailwinner.html',
+    #     'SA': 'main/emails/mailsa.html',
+    #     'MW': 'main/emails/mailmswinner.html',
+    #     'MP': 'main/emails/mailmsparticipant.html',
+    # }
+
+    # content = render_to_string(email_templates.get(candid.event, email_templates.get(candid.certificate_type)), context)
+
+    certificate_pdf = create_certificate_pdf(candid)
+
+    email = EmailMessage(
+        'Certificate of Achievement',
+        f'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!',
+        'your@gmail.com',  # Replace with your email
+        [candid.email],
+    )
+
+    email.attach(f'{candid.name + candid.email}_certificate.pdf', certificate_pdf.getvalue(), 'application/pdf')
+
+    email.send()
+
+    candid.is_sent = True
+    candid.save()
+
+    return render(request, 'main/mail_sent.html', context, {'email': candid.email})
+    

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Certificate</title>
+  <style>
+    * {
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+    }
+    
+    .certificate-main {
+      background: url('https://i.ibb.co/QKJk1bD/winner.png');
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 1200px;
+      height: 920px;
+    }
+    .border-div {
+      border: 9px double brown;
+      height: 468px;
+      width: 603px;
+      padding: 10px;
+    }
+    .btn {
+      margin-top: 20px;
+      border: none;
+      outline: none;
+      background-color: rgb(88, 88, 255);
+      color: white;
+      padding: 10px 45px 10px 45px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div  style="margin:20px 50px 20px 50px;display:none">
+    <div class="border-div">
+      <div style="position:relative; font-size: 20px;">
+        <img
+          src='https://ibb.co/RPV9rfR/winner.png'
+          width="600" style="position:absolute" />
+
+          <div id="name_content"
+          style="position:absolute; top:315px;left:469px; color:black;font-size: 20px;font-family: system-ui, sans-serif;">
+          {{candid.name}}
+        </div>
+        <div id="name_content"
+          style="position:absolute; top:350px;left:335px; color:black;font-size: 18px;font-family: system-ui, sans-serif;">
+          {{candid.college}}
+        </div>
+        <div id="name_content"
+          style="position:absolute; top:385px;left:400px; color:black;font-size: 20px;font-family: system-ui, sans-serif;">
+          {{candid.event}}
+        </div>
+      </div>
+    </div>
+    
+  </div>
+
+  <div style="">
+    <div  id="printdivcontent" style="position:relative; font-size: 20px;">
+      <img
+        src='https://i.postimg.cc/yNx5V1YM/winner.png'
+        width="900px" style="position:absolute" />
+
+      <div id="name_content"
+        style="position:absolute; top:315px;left:469px; color:black;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_name}}
+      </div>
+      <div id="name_content"
+        style="position:absolute; top:350px;left:335px; color:black;font-size: 18px;font-family: system-ui, sans-serif;">
+        {{candid_college}}
+      </div>
+      <div id="name_content"
+        style="position:absolute; top:385px;left:400px; color:black;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_event}}
+      </div>
+    </div>
+  </div>
+</body>
+</html>

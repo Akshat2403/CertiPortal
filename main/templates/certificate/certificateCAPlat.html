@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Certificate</title>
+  <style>
+    * {
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+    }
+
+    .certificate-main {
+      background: url("https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/achievement%20gold%20template.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 1200px;
+      height: 920px;
+    }
+    .border-div {
+      border: 9px double brown;
+      height: 468px;
+      width: 603px;
+      padding: 10px;
+    }
+    .btn {
+      margin-top: 20px;
+      border: none;
+      outline: none;
+      background-color: rgb(88, 88, 255);
+      color: white;
+      padding: 10px 45px 10px 45px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="margin:20px 50px 20px 50px">
+    <div class="border-div">
+      <div style="position:relative; font-size: 20px;">
+        <img
+          src="https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/CA%20achievement%20platinum%20template/CA%20achievement%20platinum%20template-1.png"
+          width="600px" style="position:absolute" />
+
+        <div id="name_content"
+          style="position:absolute; top:169px;left:314px; color:white;font-size: 14px;font-family: system-ui, sans-serif;">
+          {{candid_name}}
+        </div>
+        <div id="name_content"
+          style="position:absolute; top:189px;left:213px; color:white;font-size: 14px;font-family: system-ui, sans-serif;">
+          {{candid_college}}
+        </div>
+      </div>
+    </div>
+    
+    <button class="btn" onclick="PrintDiv()" style="margin-bottom:30px">Print</button>
+  </div>
+
+  <div style="display:none">
+    <div id="printdivcontent" style="position:relative; font-size: 20px;">
+      <img
+        src="https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/CA%20achievement%20platinum%20template/CA%20achievement%20platinum%20template-1.png"
+        width="900px" style="position:absolute" />
+
+      <div id="name_content"
+        style="position:absolute; top:260px;left:475px; color:white;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_name}}
+      </div>
+      <div id="name_content"
+        style="position:absolute; top:291px;left:325px; color:white;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_college}}
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  function PrintDiv() {
+    var divContents = document.getElementById("printdivcontent").innerHTML;
+    var printWindow = window.open('', '', 'height=1200px,width=920px');
+    printWindow.document.write('<html><head><title>Print DIV Content</title>');
+    printWindow.document.write('</head><body >');
+    printWindow.document.write(divContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+  }  
+</script>
+
+</html>

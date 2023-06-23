@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Certificate</title>
+  <style>
+    @page {
+    size: letter landscape;
+    margin: 2cm;
+    background: url("https://i.ibb.co/3FCGDr1/sa.png");
+
+
+
+     @frame name_frame {          /* Content Frame */
+            left: 365pt; width: 397pt; top: 323pt; height: 30pt;
+            -pdf-frame-content: name_content;
+            /* -pdf-frame-border: 1; */
+            
+            
+        }
+
+
+    {% if candid_event|length <= 24 %}
+
+
+
+     @frame event_frame {          /* Content Frame */
+            left: 430pt; width: 185pt; top: 352pt; height: 30pt;
+            -pdf-frame-content: event_content;
+            /* -pdf-frame-border: 1; */
+            
+            
+            
+        }
+
+    {% else %}
+
+       @frame event_frame {          /* Content Frame */
+            left: 430pt; width: 185pt; top: 342pt; height: 45pt;
+            -pdf-frame-content: event_content;
+            /* -pdf-frame-border: 1; */
+            
+          }
+
+    {% endif %}
+
+
+    @frame achievement_frame {          /* Content Frame */
+            left: 160pt; width: 190pt; top: 351pt; height: 30pt;
+            -pdf-frame-content: position_content;
+            /* -pdf-frame-border: 1; */
+            
+            
+
+}
+}
+
+#name_content{
+  font-size: 15px;
+}
+
+#event_content{
+  font-size: 15px;
+  text-align: center;
+}
+
+#achievement_content{
+  font-size: 15px;
+  text-align: center;
+}
+
+body{
+
+  font-size: 14px;
+}
+
+
+
+  </style>
+</head>
+<body>
+  <div id="name_content"><h2>{{ candid_name }}</h2></div>
+  <div id="event_content"><h2>{{candid_event}}</h2></div>
+  <div id="position_content"><h2>{{ candid_achievement }}</h2></div>
+</body>
+</html>

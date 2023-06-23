@@ -1,0 +1,180 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Certificate</title>
+	<style>
+		@page {
+    size: letter landscape;
+    margin: 2cm;
+    background: url("https://i.ibb.co/PMSspZF/Runner-up.png");
+    
+
+
+
+
+     @frame name_frame {          /* Content Frame */
+      left: 400pt; width: 210pt; top: 238pt; height: 25pt;
+            -pdf-frame-content: name_content;
+            /* -pdf-frame-border: 1; */
+          
+            
+        }
+
+
+
+     @frame event_frame {          /* Content Frame */
+            left: 330pt; width: 210pt; top: 290pt; height: 25pt;
+            -pdf-frame-content: event_content;
+            /* -pdf-frame-border: 1; */
+            
+            
+        }
+        @frame college_frame {          /* Content Frame */
+            left: 300pt; width: 350pt; top: 264pt; height: 25pt;
+            -pdf-frame-content: college_content;
+            /* -pdf-frame-border: 1; */
+            
+            
+        }
+
+
+}
+
+#name_content{
+	font-size: 15px;
+  color:white;
+}
+
+#event_content{
+	font-size: 15px;
+  text-align: center;
+  color:white;
+}
+#college_content{
+  font-size: 15px;
+  text-align: left;
+  color:white;
+}
+body{
+
+	font-size: 14px;
+}
+
+
+
+	</style>
+</head>
+<body>
+  <div id="name_content"><h2>{{ candid_name }}</h2></div>
+	<div id="event_content"><h2>{{candid_event}}</h2></div>
+  <div id="college_content"><h2>{{candid_college}}</h2></div>
+</body>
+</html> -->
+
+
+
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Certificate</title>
+  <style>
+    * {
+      margin: 0;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, sans-serif;
+    }
+
+    .certificate-main {
+      background: url("https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/comp%20runner%20template/comp%20runner%20template-1.png");
+      background-repeat: no-repeat;
+      background-size: cover;
+      width: 1200px;
+      height: 920px;
+    }
+    .border-div {
+      border: 9px double brown;
+      height: 468px;
+      width: 603px;
+      padding: 10px;
+    }
+    .btn {
+      margin-top: 20px;
+      border: none;
+      outline: none;
+      background-color: rgb(88, 88, 255);
+      color: white;
+      padding: 10px 45px 10px 45px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="margin:20px 50px 20px 50px">
+    <div class="border-div">
+      <div style="position:relative; font-size: 20px;">
+        <img
+          src="https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/comp%20runner%20template/comp%20runner%20template-1.png"
+          width="600px" style="position:absolute" />
+
+        <div id="name_content"
+          style="position:absolute; top:175px;left:305px; color:white;font-size: 14px;font-family: system-ui, sans-serif;">
+          {{candid_name}}
+        </div>
+        <div id="name_content"
+          style="position:absolute; top:199px;left:213px; color:white;font-size: 14px;font-family: system-ui, sans-serif;">
+          {{candid_college}}
+        </div>
+        <div id="name_content"
+          style="position:absolute; top:221px;left:261px; color:white;font-size: 14px;font-family: system-ui, sans-serif;">
+          {{candid_event}}
+        </div>
+      </div>
+    </div>
+    
+    <button class="btn" onclick="PrintDiv()" style="margin-bottom:30px">Print</button>
+  </div>
+
+  <div style="display:none">
+    <div id="printdivcontent" style="position:relative; font-size: 20px;">
+      <img
+        src="https://raw.githubusercontent.com/ankit11hab/CertiPortal/main/certificates/comp%20runner%20template/comp%20runner%20template-1.png"
+        width="900px" style="position:absolute" />
+
+      <div id="name_content"
+        style="position:absolute; top:269px;left:463px; color:white;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_name}}
+      </div>
+      <div id="name_content"
+        style="position:absolute; top:305px;left:320px; color:white;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_college}}
+      </div>
+      <div id="name_content"
+        style="position:absolute; top:341px;left:395px; color:white;font-size: 20px;font-family: system-ui, sans-serif;">
+        {{candid_event}}
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  function PrintDiv() {
+    var divContents = document.getElementById("printdivcontent").innerHTML;
+    var printWindow = window.open('', '', 'height=1200px,width=920px');
+    printWindow.document.write('<html><head><title>Print DIV Content</title>');
+    printWindow.document.write('</head><body >');
+    printWindow.document.write(divContents);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.print();
+  }  
+</script>
+
+</html>
