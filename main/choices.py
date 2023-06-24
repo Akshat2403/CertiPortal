@@ -28,6 +28,20 @@ CERTIFICATE_PATHS = [
         # ('MW','./certificates/Winner.pdf'),
     ]
 
+EMAIL_CONTENT = [
+        ('CA_G', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('CA_P', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('CA_S', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('P', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('W', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('R1', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('R2', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        ('R', 'Dear {candid.name},\n\nPlease find the attached certificate for your achievement in {candid.event}.\n\nCongratulations!'),
+        # ('SA' , ''),
+        # ('MP',''),
+        # ('MW',''),
+    ]
+
 EVENT_OPTIONS = [
         ('None', 'None'),
         ('Haute Couture', 'Haute Couture'),
