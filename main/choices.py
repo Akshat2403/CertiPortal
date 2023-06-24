@@ -13,19 +13,19 @@ CERTIFICATE_OPTIONS = [
         ('MP', 'Manshakti Participant'),
         ('MW', 'Manshakti Winner'),
     ]
-CERTIFICATE_OPTIONS = [
-        ('CA_G', 'Campus Ambassador Gold'),
-        ('CA_P', 'Campus Ambassador Platinum'),
-        ('CA_S', 'Campus Ambassador Silver'),
-        ('CA_Part', 'Campus Ambassador Participation'),
-        ('P' , 'Participant' ),
-        ('W' , 'Winner'),
-        ('R1' , 'First Runner'),
-        ('R2' , 'Second Runner'),
-        ('R' , 'Runner'),
-        ('SA' , 'Special Achievement'),
-        ('MP', 'Manshakti Participant'),
-        ('MW', 'Manshakti Winner'),
+CERTIFICATE_PATHS = [
+        ('CA_G', './certificates/CAGold.pdf'),
+        ('CA_P', './certificates/CAPlatinum.pdf'),
+        ('CA_S', './certificates/CASilver.pdf'),
+        ('CA_Part','./certificates/CAParticipant.pdf' ),
+        ('P' ,'./certificates/Participation.pdf'),
+        ('W' ,'./certificates/Winner.pdf' ),
+        ('R1' ,'./certificates/Runnerup.pdf' ),
+        ('R2' ,'./certificates/SecondRunnerup.pdf'),
+        ('R' , './certificates/Runnerup.pdf'),
+        # ('SA' , './certificates/Winner.pdf'),
+        # ('MP','./certificates/Winner.pdf'),
+        # ('MW','./certificates/Winner.pdf'),
     ]
 
 EVENT_OPTIONS = [
