@@ -10,7 +10,7 @@ class candidate(models.Model):
     is_sent = models.BooleanField(default=False)
     is_valid = models.BooleanField(default = True)
     event = models.CharField(max_length=50, choices=EVENT_OPTIONS, default='', blank = False)
-    email = models.EmailField(max_length=70, blank = False,unique=True)
+    email = models.EmailField(max_length=70, blank = False)
     def __str__(self):
         return self.name
     

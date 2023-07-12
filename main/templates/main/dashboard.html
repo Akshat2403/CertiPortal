@@ -9,9 +9,10 @@
         <th scope="col" class="px-6 py-3">Name</th>
         <th scope="col" class="px-6 py-3">Event</th>
         <th scope="col" class="px-6 py-3">Certificate Type</th>
-        <th scope="col" class="px-6 py-3">
+        <th scope="col" class="px-6 py-3 text-right"><a href={%url 'mail_all'%} class="text-blue-500 hover:underline">Mail 50</a></th>
+        {% comment %} <th scope="col" class="px-6 py-3">
           <span class="sr-only">Edit</span>
-        </th>
+        </th> {% endcomment %}
       </tr>
     </thead>
     <tbody>
@@ -30,7 +31,7 @@
         <td class="px-6 py-4 text-right">
           {% if not candidate.is_sent%}
           <a
-            href="{% url 'send_email' email=candidate.email %}"
+            href="{% url 'send_email' id=candidate.id %}"
             class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-4"
             >Send mail</a
           >

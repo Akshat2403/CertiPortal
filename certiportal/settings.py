@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-5mbelm=$(h8e6a193hs#*^16*3ifif!d45mtss&nx+rsb!8l@a'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'main',
+    'minio_storage',
     'import_export',
 ]
 
@@ -74,13 +75,24 @@ WSGI_APPLICATION = 'certiportal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ.get('db_name'),
+            'USER': os.environ.get('db_user'),
+            'PASSWORD': os.environ.get('db_password'),
+            'HOST': os.environ.get('db_host'),
+            'PORT': os.environ.get('db_port')
+        }
+    }
 
 
 # Password validation
@@ -120,17 +132,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+if DEBUG==False:
+    DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
+    STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
+    MINIO_STORAGE_ENDPOINT =os.environ.get('minio_endpoint')
+    MINIO_STORAGE_ACCESS_KEY = os.environ.get('minio_access')
+    MINIO_STORAGE_SECRET_KEY = os.environ.get('minio_secret')
+    MINIO_STORAGE_USE_HTTPS = True
+    MINIO_STORAGE_STATIC_BUCKET_NAME = 'alchercertiportal'
+    MINIO_STORAGE_AUTO_CREATE_STATIC_BUCKET = True
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
+LOGIN_URL = '/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_FROM_EMAIL = 'your@gmail.com'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp-mail.outlook.com'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'your@gmail.com'
-EMAIL_HOST_PASSWORD ='password'
+EMAIL_HOST_USER = os.environ.get('EMAIL')
+EMAIL_HOST_PASSWORD = os.environ.get('PASSWORD')
