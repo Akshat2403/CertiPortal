@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-5mbelm=$(h8e6a193hs#*^16*3ifif!d45mtss&nx+rsb!8l@a
 DEBUG = os.environ.get('prod')
 
 ALLOWED_HOSTS = ['*']
+CSRF_TRUSTED_ORIGINS = ['https://certi.alcheringa.in']
 
 
 # Application definition
@@ -136,10 +137,10 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-if DEBUG==False:
+if DEBUG == False:
     DEFAULT_FILE_STORAGE = "minio_storage.storage.MinioMediaStorage"
     STATICFILES_STORAGE = "minio_storage.storage.MinioStaticStorage"
-    MINIO_STORAGE_ENDPOINT =os.environ.get('minio_endpoint')
+    MINIO_STORAGE_ENDPOINT = os.environ.get('minio_endpoint')
     MINIO_STORAGE_ACCESS_KEY = os.environ.get('minio_access')
     MINIO_STORAGE_SECRET_KEY = os.environ.get('minio_secret')
     MINIO_STORAGE_USE_HTTPS = True
